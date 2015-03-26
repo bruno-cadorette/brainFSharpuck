@@ -25,12 +25,12 @@ module Interpreter =
         
         let rec parsing = 
             function 
-            | x :: xs when x = '[' -> 
+            | '[' :: xs -> 
                 let innerLoop, innerRemaining = parsing xs
                 let commands, remaining = parsing innerRemaining
                 let remainingCommands, after = parsing remaining
                 Loop(innerLoop) :: commands @ remainingCommands, after
-            | x :: xs when x = ']' -> [], xs
+            | ']' :: xs -> [], xs
             | x :: xs when Set.contains x literals -> 
                 let commands, remaining = parsing xs
                 SimpleCommand(x) :: commands, remaining
